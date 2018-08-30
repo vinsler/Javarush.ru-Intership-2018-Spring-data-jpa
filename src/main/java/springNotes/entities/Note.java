@@ -10,6 +10,9 @@ public class Note {
     private int Status;
     private User user;
 
+    public Note() {
+    }
+
     public void setId(int id) {
         this.id = id;
     }

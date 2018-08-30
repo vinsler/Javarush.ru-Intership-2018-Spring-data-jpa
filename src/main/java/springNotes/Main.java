@@ -7,13 +7,12 @@ import springNotes.entities.User;
 
 public class Main {
     public static void main(String[] args) {
-        ApplicationContext contextUser = new AnnotationConfigApplicationContext("springNotes");
-        User user = contextUser.getBean(User.class);
 
-        ApplicationContext contextNote = new AnnotationConfigApplicationContext("config.class");
-        Note note = contextNote.getBean(Note.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext("ConfigNote");
+        User user = context.getBean(User.class);
+        Note note = context.getBean(Note.class);
 
-        System.out.println(user.getId());
-        System.out.println(note.getId());
+        System.out.println(user.getName());
+        System.out.println(note.getName());
     }
 }

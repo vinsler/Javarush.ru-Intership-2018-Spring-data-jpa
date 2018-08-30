@@ -2,12 +2,15 @@ package springNotes.entities;
 
 import org.springframework.stereotype.Component;
 
-@Component ("user")
+@Component("user")
 public class User {
     private int id;
     private String name;
     private String login;
     private String password;
+
+    public User() {
+    }
 
     public void setId(int id) {
         this.id = id;

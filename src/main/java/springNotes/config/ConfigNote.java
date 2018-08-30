@@ -7,13 +7,16 @@ import springNotes.entities.Note;
 import springNotes.entities.User;
 
 @Configuration
-@ComponentScan("springNotes.entities")
+@ComponentScan
 public class ConfigNote {
 
     @Bean
-    public Note getNote(User user){
-        Note note = new Note();
-        note.setId(90);
-        return note;
+    public Note getNote(){
+        return new Note();
+    }
+
+    @Bean
+    public User getUser(){
+        return new User();
     }
 }
