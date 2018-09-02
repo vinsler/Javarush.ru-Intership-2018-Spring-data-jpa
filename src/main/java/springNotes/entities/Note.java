@@ -1,7 +1,10 @@
 package springNotes.entities;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
+@Component
 public class Note {
     private int id;
     private String Name;

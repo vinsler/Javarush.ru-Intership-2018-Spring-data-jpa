@@ -2,7 +2,7 @@ package springNotes.entities;
 
 import org.springframework.stereotype.Component;
 
-@Component("user")
+@Component
 public class User {
     private int id;
     private String name;
