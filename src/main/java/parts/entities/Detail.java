@@ -1,26 +1,23 @@
 package parts.entities;
 
-import org.springframework.stereotype.Component;
+import org.springframework.data.annotation.Id;
+
 import javax.persistence.*;
 
-@Component
 @Entity
-@Table(name = "detail")
 public class Detail {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column (name = "name")
     private String name;
 
-    @Column (name = "required")
     private boolean required;
 
-    @Column (name = "count")
     private int count;
 
     public Detail() {
     }
+
 }

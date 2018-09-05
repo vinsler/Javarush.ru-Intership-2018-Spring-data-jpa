@@ -7,7 +7,7 @@ create table if not exists detail (
 
   id              int(11) auto_increment, primary key(id),
   name            varchar(20) not null,
-  required         tinyint(1) not null default 0,
+  required        tinyint(1) not null default 0,
   count           int not null default 0
 
 ) default character set utf8;
