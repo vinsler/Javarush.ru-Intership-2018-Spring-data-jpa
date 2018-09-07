@@ -12,9 +12,7 @@ public class Detail {
     private Integer id;
 
     private String name;
-
     private boolean required;
-
     private int count;
 
     public Detail() {
