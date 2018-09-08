@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%request.setCharacterEncoding("UTF-8");%>
+
 <html>
 
 <head>
@@ -21,7 +25,9 @@
 </h4>
 
 <div role="main" align="center" >
-    <button onclick= "location.href = '/view/viewparts.jsp' "> Next </button>
+    <button onclick= "location.href = '/parts' "> parts location </button>
+    <a href="/parts"> parts controller </a>
+    <a href="/parts.jsp"> parts.jsp </a>
 </div>
 
 <div class="footer">
