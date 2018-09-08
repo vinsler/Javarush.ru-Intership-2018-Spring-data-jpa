@@ -13,7 +13,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories
-public class ConfigDB {
+public class CfgDataBase {
 
     @Bean
     public DriverManagerDataSource dataSource() {

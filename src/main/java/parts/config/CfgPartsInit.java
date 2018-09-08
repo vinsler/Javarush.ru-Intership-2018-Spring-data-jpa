@@ -2,17 +2,17 @@ package parts.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class ConfigPartsInit extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class CfgPartsInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                ConfigDB.class
+                CfgDataBase.class
         };
     }
 
     protected Class<?>[] getServletConfigClasses() {
         return new Class<?>[]{
-                ConfigWeb.class
+                CfgMvcDispatcherServlet.class
         };
     }
 

@@ -15,8 +15,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 @EnableWebMvc
 @EnableJpaRepositories
 @ComponentScan
-//@Import({ConfigDB.class})
-public class ConfigWeb extends WebMvcConfigurationSupport {
+public class CfgMvcDispatcherServlet extends WebMvcConfigurationSupport {
 
     @Bean
     public UrlBasedViewResolver setupViewResolver(){
