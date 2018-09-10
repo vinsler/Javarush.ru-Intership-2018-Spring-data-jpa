@@ -4,13 +4,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class CfgPartsInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    protected Class<?>[] getRootConfigClasses() {
+    protected Class<?>[] getRootConfigClasses() { // доступ к базе, сущности
         return new Class<?>[]{
                 CfgDataBase.class
         };
     }
 
-    protected Class<?>[] getServletConfigClasses() {
+    protected Class<?>[] getServletConfigClasses() { // мапинг к jsp/view
         return new Class<?>[]{
                 CfgMvcDispatcherServlet.class
         };

@@ -34,8 +34,10 @@ public class CfgDataBase {
 
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+
         emFactory.setJpaProperties(properties);
-        emFactory.setPackagesToScan("parts.dao", "parts.entities");
+        emFactory.setPackagesToScan("parts.entities");
         return emFactory;
     }
 
