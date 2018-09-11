@@ -1,8 +1,8 @@
 package parts.entities;
 
-import javax.persistence.*;
-
 // Создали сущность, через персистенс, сделали пустой конструктор, геттеры/сеттеры.
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "detail")

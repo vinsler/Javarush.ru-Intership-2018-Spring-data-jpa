@@ -25,8 +25,9 @@
 </h4>
 
 <div role="main" align="center" >
+    <button onclick= "location.href = '/parts' "> parts location </button>
     <a href="/parts"> parts controller </a>
-    <a href="/view"> view </a>
+    <a href="/parts.jsp"> parts.jsp </a>
 </div>
 
 <div class="footer">
