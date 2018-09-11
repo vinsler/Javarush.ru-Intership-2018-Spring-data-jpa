@@ -11,7 +11,7 @@ import parts.services.DetailService;
 
 import java.util.List;
 
-
+@RequestMapping ("/")
 @Controller // создали контроллер деталей
 
 public class ControllerDetail {
@@ -19,18 +19,21 @@ public class ControllerDetail {
     @Autowired // автозагрузили класс сервиса деталей
     private DetailService serviceClassDetail;
 
+    @GetMapping("/") // начальная страница при загрузке
+    public String index(){
+        return "index";
+    }
 
-    @RequestMapping(value = "/parts", method = RequestMethod.GET) // имя/шаблон для web
-    public String Detail(String name, Model model) {
-        List <Detail> detail = serviceClassDetail.findAll();
-        model.addAttribute(detail);
+
+    @GetMapping("/parts") // имя/шаблон для web
+    public String Detail() {
         return "parts"; // {имя без расширения *.jsp} = {parts + .jsp} = {parts.jsp}
     }
 
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public String findByName(String name, Model model) {
-        Detail detail = serviceClassDetail.findByName(name);
-        model.addAttribute(detail);
+    @GetMapping("/view")
+    public String findAll(Model model) {
+        List<Detail> detailList = serviceClassDetail.findAll();
+        model.addAttribute(detailList);
         return "view";
     }
 }
