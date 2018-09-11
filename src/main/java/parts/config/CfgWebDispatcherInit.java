@@ -6,7 +6,8 @@ public class CfgWebDispatcherInit extends AbstractAnnotationConfigDispatcherServ
 
     protected Class<?>[] getRootConfigClasses() { // мапинг ко всему кроме web
         return new Class<?>[]{
-                CfgDataBase.class, CfgServiceInit.class
+                CfgDataBase.class,
+                CfgServiceInit.class
         };
     }
 

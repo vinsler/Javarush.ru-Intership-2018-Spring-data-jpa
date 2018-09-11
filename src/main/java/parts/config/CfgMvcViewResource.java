@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan (basePackages = "parts.controller")
+
 public class CfgMvcViewResource implements WebMvcConfigurer {
 
     @Bean
@@ -22,7 +23,6 @@ public class CfgMvcViewResource implements WebMvcConfigurer {
         resolver.setViewClass(JstlView.class);
         return resolver;
     }
-
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
