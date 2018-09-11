@@ -7,22 +7,18 @@ import parts.entities.Detail;
 
 import java.util.List;
 
-@Service
+@Service // создали сервис класс Детали
 public class DetailService {
 
-    @Autowired
+    @Autowired // автозагрузили интерфейс JPA репозитория
     private DetailRepository detailRepository;
 
-    public Detail find(Integer id) {
-        return detailRepository.getOne(id);
+    public List<Detail> findAll() {
+        return detailRepository.findAll();
     }
 
     public Detail findByName(String name) {
         return detailRepository.findDetailByName(name);
-    }
-
-    public List<Detail> findAll() {
-        return detailRepository.findAll();
     }
 
 }

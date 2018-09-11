@@ -6,7 +6,7 @@ import parts.entities.Detail;
 
 import java.util.List;
 
-@Repository
+@Repository // создали интерфейс JPA репозитория
 public interface DetailRepository extends JpaRepository<Detail, Integer> {
 
     Detail findDetailByName(String name);   // поиск по имени
