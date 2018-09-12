@@ -5,11 +5,11 @@
 
 <html>
 <head>
-    <title> viewparts </title>
+    <title> add </title>
 </head>
 <body>
 
-<p> VIEW PARTS</p>
+<p> add PARTS</p>
 
 </body>
 </html>
