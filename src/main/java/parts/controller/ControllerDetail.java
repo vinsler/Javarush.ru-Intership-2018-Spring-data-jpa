@@ -3,9 +3,7 @@ package parts.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import parts.entities.Detail;
 import parts.services.DetailService;
 
@@ -24,16 +22,39 @@ public class ControllerDetail {
         return "index";
     }
 
-
-    @GetMapping("/parts") // имя/шаблон для web
-    public String Detail() {
-        return "parts"; // {имя без расширения *.jsp} = {parts + .jsp} = {parts.jsp}
+    @GetMapping("/view")
+    public String findAll(Model model, @RequestParam Integer page) {
+        List<Detail> detailList = serviceClassDetail.findAll(page);
+        Integer size = serviceClassDetail.findAllSize();
+        model.addAttribute(detailList);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        return "view";
     }
 
-    @GetMapping("/view")
-    public String findAll(Model model) {
-        List<Detail> detailList = serviceClassDetail.findAll();
-        model.addAttribute(detailList);
-        return "view";
+    @GetMapping("/delete/{id}/{page}/{dlist}")
+    public String delete(Model model, @PathVariable("id") int id, @PathVariable("page") int page,
+                         @PathVariable("dlist") int dlist) {
+        serviceClassDetail.delete(id);
+        if (dlist == 1 && page > 0) {
+            page -= page;
+            return "redirect:/view?page=" + page;
+        }
+        return "redirect:/view?page=" + page;
+    }
+
+    @GetMapping("/add") // имя/шаблон для web
+    public void add() {
+
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, Integer id) {
+        return "remove";
+    }
+
+    @GetMapping("/find") // имя/шаблон для web
+    public String findByName(Model model, String name) {
+        return "add"; // {имя без расширения *.jsp} = {parts + .jsp} = {add.jsp}
     }
 }
