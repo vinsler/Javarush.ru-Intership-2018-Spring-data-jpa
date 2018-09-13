@@ -15,10 +15,15 @@
 <body>
 
 
-<h3 class="tab"> CURRENT PAGE -> ${page}</h3>
-<h3 class="tab"> SIZE OF LIST -> ${detailList.size()}</h3>
-<br>
+<h4 class="tab"> CURRENT PAGE -> ${page}</h4>
+<h4 class="tab"> NAME OF LISTS-> ${nameoflist}</h4>
+<h4 class="tab"> SIZE OF LIST -> ${detailList.size()}</h4>
+<h4 class="tab"> SIZE OF ALL LIST -> ${size}</h4>
 
+<a class="tab" href="/required?page=0"> Required parts </a><br>
+<a class="tab" href="/optional?page=0"> Optional parts </a><br>
+<a class="tab" href="/view?page=0"> All exist parts </a><br>
+<br>
 
 <h1 class="tab"> View parts of details  </h1>
 
@@ -27,7 +32,7 @@
         <tr>
             <th width="200">Name</th>
             <th width="80">Required</th>
-            <th width="60">Counter</th>
+            <th width="60">Count</th>
             <th width="60">Edit</th>
             <th width="60">Delete</th>
         </tr>
@@ -37,7 +42,7 @@
                 <td>${detail.required}</td>
                 <td>${detail.count}</td>
                 <td><a href="<c:url value='/edit/${detail.id}'/>">Edit</a></td>
-                <td><a href="<c:url value='/delete/${detail.id}/${page}/${detailList.size()}'/>">Delete</a></td>
+                <td><a href="<c:url value='/delete/${detail.id}/${page}/${detailList.size()}/${nameoflist}'/>">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
@@ -45,7 +50,7 @@
 <br>
 
     <c:if test="${page > 0}">
-        <button class="tab" onclick= "location.href = '/view?page= + ${page - 1}'"> <<< </button>
+        <button class="tab" onclick= "location.href = '/${nameoflist}?page=${page - 1}'"> <<< </button>
     </c:if>
     <c:if test="${page == 0}">
         <button class="tab"> <<< </button>
@@ -53,31 +58,26 @@
 
     &nbsp;&nbsp;&nbsp;&nbsp;
 
-    <c:if test="${detailList.size() == 10 && size != detailList.size()}">
-        <button onclick= "location.href = '/view?page= + ${page + 1}'"> >>> </button>
-    </c:if>
-    <c:if test="${detailList.size() <= 10}">
-        <button> >>> </button>
+    <c:if test="${detailList.size() + page * 10 < size}">
+        <button onclick= "location.href = '/${nameoflist}?page=${page + 1}'"> >>> </button>
     </c:if>
 
+
+<h3 class="tab"> Можно собрать ${minCount} компьютеров</h3>
 
 <br><br>
 <h1 class="tab"> Add new detail </h1>
-<br><br>
-
 <form action="/add" class="tab" method="post">
-    <input type="text" name="name" value="${name}" size="20" maxlength="10"> name
-    <br><br>
-    <input type="text" name="count" value="${count}" size="20" maxlength="100"> count
-    <br><br>
-    <input type="checkbox" name="required" size="20" maxlength="32"> required
-    <br><br>
-    <input type="submit" value="submit"/> &nbsp;
-    <br><br>
+    <input type="text" name="name" value="${name}" size="20" maxlength="10"> name <br><br>
+    <input type="text" name="count" value="${count}" size="20" maxlength="100"> count <br><br>
+    <input type="checkbox" name="required" size="20" maxlength="32"> required <br><br>
+    <input type="submit" value="submit"/>
 </form>
 
-
-
+<form action="/findByName/${name}" class="tab" method="get">
+    <input type="text" name="name" size="40" maxlength="40"> name <br><br>
+    <input type="submit" value="submit">
+</form>
 
 
 </body>
