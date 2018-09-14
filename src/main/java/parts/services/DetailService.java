@@ -50,6 +50,10 @@ public class DetailService {
         return detailRepository.findMinimum();
     }
 
+    public Detail findFirstByRequiredOrderByCountAsc(){
+        return detailRepository.findFirstByRequiredOrderByCountAsc(true);
+    }
+
     public void delete(Integer id){
         detailRepository.deleteById(id);
     }

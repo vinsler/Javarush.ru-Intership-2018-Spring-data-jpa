@@ -25,6 +25,8 @@ public interface DetailRepository extends JpaRepository<Detail, Integer> {
     @Query (value = "Select min(d.count) from (SELECT * FROM detail where required = true) d", nativeQuery = true)
     Integer findMinimum();
 
+    Detail findFirstByRequiredOrderByCountAsc(boolean required);
+
 
     // edit
 

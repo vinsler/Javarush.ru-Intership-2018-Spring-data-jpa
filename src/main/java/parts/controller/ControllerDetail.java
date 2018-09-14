@@ -29,7 +29,9 @@ public class ControllerDetail {
         List<Detail> detailList = serviceClassDetail.findAll(page);
         Integer size = serviceClassDetail.findAllSize();
 
-        Integer detailMinCount = serviceClassDetail.findMinimum();
+        Integer detailMinCount = serviceClassDetail.findFirstByRequiredOrderByCountAsc().getCount();
+
+        //Integer detailMinCount = serviceClassDetail.findMinimum();
         model.addAttribute("minCount", detailMinCount);
 
         model = serviceClassDetail.prewReturn(model, detailList, page, size, "view");

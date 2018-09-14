@@ -4,7 +4,7 @@
 
 ---
 |Tech |use in|project|
-|:-:||:-:||:-:|
+|:-:|:-:|:-:|
 |Maven|JSTL|JSP|
 |Tomcat|SQL|MySQL|
 |Spring|JPA|Web|
