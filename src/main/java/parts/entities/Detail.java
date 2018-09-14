@@ -28,31 +28,24 @@ public class Detail {
     public Integer getId() {
         return id;
     }
-
     public String getName() {
         return name;
     }
-
     public boolean isRequired() {
         return required;
     }
-
     public int getCount() {
         return count;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public void setRequired(boolean required) {
         this.required = required;
     }
-
     public void setCount(int count) {
         this.count = count;
     }
