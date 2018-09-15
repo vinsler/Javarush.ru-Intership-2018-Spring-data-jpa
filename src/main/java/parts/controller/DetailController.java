@@ -91,7 +91,7 @@ public class ControllerDetail {
 
     @PostMapping("/edit")
     public String edit(@ModelAttribute("detailEdit") Detail detail){
-        serviceClassDetail.insert(detail);
+        serviceClassDetail.update(detail);
         return "redirect:/view?page=0";
     }
 
