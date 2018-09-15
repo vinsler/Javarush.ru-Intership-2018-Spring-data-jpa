@@ -46,11 +46,11 @@ public class DetailService {
         return detailRepository.findByRequired(false).size();
     }
 
-    public Integer findMinimum(){
+    public Integer findMinimumNativeQuery(){
         return detailRepository.findMinimum();
     }
 
-    public Detail findFirstByRequiredOrderByCountAsc(){
+    public Detail findDetailMinimum(){
         return detailRepository.findFirstByRequiredOrderByCountAsc(true);
     }
 
@@ -70,14 +70,26 @@ public class DetailService {
         detailRepository.saveAndFlush(detail);
     }
 
+    public Detail update(Detail detail) {
+        return detailRepository.save(detail);
+    }
+
+
+
+
+
 
     public Model prewReturn(Model model, List<Detail> detailList, Integer page,
-                             Integer size, String viewer){
+                             Integer size, String viewer, Detail detail, Integer detailCountMin, Detail detailEdit){
+
         model.addAttribute(detailList);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("nameoflist", viewer);
-        model.addAttribute("ctrlDetail", new Detail());
+        model.addAttribute("ctrlDetail", detail);
+        model.addAttribute("minCount", detailCountMin);
+        model.addAttribute("detailEdit", detailEdit);
+
         return model;
     }
 
