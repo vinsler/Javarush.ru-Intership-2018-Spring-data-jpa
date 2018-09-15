@@ -17,13 +17,12 @@
 
 <body>
 
-
-<a class="tab"> detail For Edit =  ${detailEdit.name} </a> <br>
-<a class="tab"> NAME -> ${name}</a> <br>
-<a class="tab"> CURRENT PAGE -> ${page}</a><br>
-<a class="tab"> NAME OF LISTS-> ${nameoflist}</a><br>
-<a class="tab"> SIZE OF LIST -> ${detailList.size()}</a><br>
-<a class="tab"> SIZE OF ALL LIST -> ${size}</a><br><br>
+<%--<a class="tab"> detail For Edit =  ${detailEdit.name} </a> <br>--%>
+<%--<a class="tab"> NAME -> ${name}</a> <br>--%>
+<%--<a class="tab"> CURRENT PAGE -> ${page}</a><br>--%>
+<%--<a class="tab"> NAME OF LISTS-> ${nameoflist}</a><br>--%>
+<%--<a class="tab"> SIZE OF LIST -> ${detailList.size()}</a><br>--%>
+<%--<a class="tab"> SIZE OF ALL LIST -> ${size}</a><br><br>--%>
 
 <a class="tab" href="/required?page=0"> Required parts </a><br>
 <a class="tab" href="/optional?page=0"> Optional parts </a><br>
@@ -109,6 +108,7 @@
     <c:if test="${detailEdit.id != null}">
         <h3 class="tab"> Detail edit </h3>
         <form:form modelAttribute="detailEdit" action="/edit" method="put" class="tab">
+            <form:input type="hidden" path="id" value="${detailEdit.id}"/>
             <table>
                 <tbody>
                 <tr>
