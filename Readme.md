@@ -7,9 +7,9 @@
 |:-:|:-:|:-:|
 |Maven|JSTL|JSP|
 |Tomcat|SQL|MySQL|
-|Spring|JPA|Web|
+|Spring|Data|JPA|
 |Hibernate|Git|Xml|
-|Java-Cfg|MVC|@Id|
+|Java-Cfg|MVC|Web|
 
 
 Перед запуском используйте скрипт: scriptDB.sql    
