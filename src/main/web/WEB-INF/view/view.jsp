@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%request.setCharacterEncoding("UTF-8");%>
 
@@ -17,11 +18,7 @@
 <body>
 
 
-<c:if test="${detailForEdit != null}">
-    <a> ${detailForEdit.name} </a>
-</c:if>
-<a> detailForEdit =  ${detailForEdit.name} </a>
-
+<a class="tab"> detail For Edit =  ${detailEdit.name} </a> <br>
 <a class="tab"> NAME -> ${name}</a> <br>
 <a class="tab"> CURRENT PAGE -> ${page}</a><br>
 <a class="tab"> NAME OF LISTS-> ${nameoflist}</a><br>
@@ -49,7 +46,8 @@
                 <td>${detail.name}</td>
                 <td>${detail.required}</td>
                 <td>${detail.count}</td>
-                <td><a href="<c:url value='/edit/${detail.name}/${page}/${detailList.size()}/${nameoflist}'/>">Edit</a></td>
+                <%--<td><a href="<c:url value='/edit/${detail.name}/${page}/${detailList.size()}/${nameoflist}'/>">Edit</a></td>--%>
+                <td><a href="/edit?name=${detail.name}&page=${page}&size=${detailList.size()}&nameoflist=${nameoflist}">Edit</a></td>
                 <td><a href="<c:url value='/delete/${detail.id}/${page}/${detailList.size()}/${nameoflist}'/>">Delete</a></td>
             </tr>
         </c:forEach>
@@ -82,36 +80,64 @@
 
     <hr class="tab" width="40%">
 
-    <h3 class="tab"> Add new detail </h3>
-    <form:form modelAttribute="ctrlDetail" method="post" action="/add" class="tab">
-        <table>
-            <tbody>
-            <tr>
-                <td>Name</td>
-                <td><form:input path="name"/></td>
-            </tr>
-            <tr>
-                <td>count</td>
-                <td><form:input path="count"/></td>
-            </tr>
-            <tr>
-                <td>Required</td>
-                <td><form:checkbox  path="required"/></td>
-            </tr>
-            <tr>
-                <td>Add detail </td>
-                <td><input type="submit" value="Добавить"></td>
-            </tr>
-            </tbody>
-        </table>
-    </form:form>
+    <c:if test="${detailEdit.id == null}">
+        <h3 class="tab"> Add new detail </h3>
+        <form:form modelAttribute="ctrlDetail" method="post" action="/add" class="tab">
+            <table>
+                <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td><form:input path="name"/></td>
+                </tr>
+                <tr>
+                    <td>count</td>
+                    <td><form:input path="count"/></td>
+                </tr>
+                <tr>
+                    <td>Required</td>
+                    <td><form:checkbox  path="required"/></td>
+                </tr>
+                <tr>
+                    <td>Add detail </td>
+                    <td><input type="submit" value="Добавить"></td>
+                </tr>
+                </tbody>
+            </table>
+        </form:form>
+    </c:if>
+
+    <c:if test="${detailEdit.id != null}">
+        <h3 class="tab"> Detail edit </h3>
+        <form:form modelAttribute="detailEdit" action="/edit" method="put" class="tab">
+            <table>
+                <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td><form:input path="name"/></td>
+                </tr>
+                <tr>
+                    <td>Count</td>
+                    <td><form:input path="count"/></td>
+                </tr>
+                <tr>
+                    <td>Required</td>
+                    <td><form:checkbox path="required"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Изменить"></td>
+                </tr>
+                </tbody>
+            </table>
+        </form:form>
+    </c:if>
 
     <hr class="tab" width="40%">
 
     <h3 class="tab"> Find detail </h3>
     <form method="get" action="/find?=${name}" class="tab">
         <input type="text" name="name" size="20" maxlength="40"> NAME
-        <input type="submit" value="submit"/>
+        <input type="submit" value="Поиск"/>
     </form>
 
 </body>

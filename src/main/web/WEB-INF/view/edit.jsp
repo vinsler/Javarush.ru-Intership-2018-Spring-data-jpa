@@ -11,5 +11,7 @@
 
 <p> add PARTS</p>
 
+<a> ${detailEdit.name} </a>
+
 </body>
 </html>
