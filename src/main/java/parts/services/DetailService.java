@@ -1,8 +1,6 @@
 package parts.services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,30 +9,31 @@ import org.springframework.ui.Model;
 import parts.dao.DetailRepository;
 import parts.entities.Detail;
 
-import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Optional;
 
-@Service // создали сервис класс Детали
+@Service
 public class DetailService {
 
-    @Autowired // автозагрузили интерфейс JPA репозитория
+    @Autowired
     private DetailRepository detailRepository;
 
-    public Integer findAllSize(){
+    public Integer findAllSize() {
         return detailRepository.findAll().size();
     }
 
     public List<Detail> findAll(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Detail> pageList = detailRepository.findAll(pageable);
-        return  pageList.getContent();
+        return pageList.getContent();
     }
 
-    public List<Detail> findByRequired(Integer page){
+    public List<Detail> findByRequired(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
         return detailRepository.findByRequired(pageable, true);
     }
-    public Integer findByRequiredSize(){
+
+    public Integer findByRequiredSize() {
         return detailRepository.findByRequired(true).size();
     }
 
@@ -42,23 +41,20 @@ public class DetailService {
         Pageable pageable = PageRequest.of(page, 10);
         return detailRepository.findByRequired(pageable, false);
     }
-    public Integer findByOptionalSize(){
+
+    public Integer findByOptionalSize() {
         return detailRepository.findByRequired(false).size();
     }
 
-    public Integer findMinimumNativeQuery(){
-        return detailRepository.findMinimum();
-    }
-
-    public Detail findDetailMinimum(){
+    public Detail findDetailMinimum() {
         return detailRepository.findFirstByRequiredOrderByCountAsc(true);
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         detailRepository.deleteById(id);
     }
 
-    public Detail findByName(String name){
+    public Detail findByName(String name) {
         Detail detail = detailRepository.findByName(name);
         if (detail == null) {
             return new Detail();
@@ -66,22 +62,21 @@ public class DetailService {
         return detail;
     }
 
-    public void insert(Detail detail){
+    public void insert(Detail detail) {
         detailRepository.saveAndFlush(detail);
     }
 
-    public Detail update(Detail detail) {
-        return detailRepository.save(detail);
+    public void update(Detail detail) {
+        Optional<Detail> detailOptional = detailRepository.findById(detail.getId());
+        Detail detailGet = detailOptional.orElseThrow(() -> new RuntimeException("detail not find."));
+        detailGet.setName(detail.getName());
+        detailGet.setCount(detail.getCount());
+        detailGet.setRequired(detail.isRequired());
+        detailRepository.saveAndFlush(detailGet);
     }
 
-
-
-
-
-
-    public Model prewReturn(Model model, List<Detail> detailList, Integer page,
-                             Integer size, String viewer, Detail detail, Integer detailCountMin, Detail detailEdit){
-
+    public Model prewReturn(Model model, List<Detail> detailList, Integer page, Integer size,
+                            String viewer, Detail detail, Integer detailCountMin, Detail detailEdit) {
         model.addAttribute(detailList);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
@@ -89,30 +84,25 @@ public class DetailService {
         model.addAttribute("ctrlDetail", detail);
         model.addAttribute("minCount", detailCountMin);
         model.addAttribute("detailEdit", detailEdit);
-
         return model;
     }
 
-    public String creatRedirectForEditDelete(
-            int dlist,
-            String nameoflist,
-            int page){
+    public String creatRedirectForEditDelete(int dlist, String nameoflist, int page) {
         StringBuffer sb = new StringBuffer().append("redirect:/");
-
         switch (nameoflist) {
-            case "view":{
+            case "view": {
                 sb.append("view?page=");
                 break;
             }
-            case "required":{
+            case "required": {
                 sb.append("required?page=");
                 break;
             }
-            case "optional" :{
+            case "optional": {
                 sb.append("optional?page=");
                 break;
             }
-            case "find" :{
+            case "find": {
                 return "redirect:/view?page=0";
             }
         }
@@ -123,5 +113,30 @@ public class DetailService {
         }
         sb.append(page);
         return sb.toString();
+    }
+
+    public List<Detail> detailListReturn(String nameoflist, Detail detail, Integer page) {
+        List<Detail> detailList = null;
+        Pageable pageable = PageRequest.of(page, 10);
+
+        switch (nameoflist) {
+            case "view": {
+                detailList = detailRepository.findAll(pageable).getContent();
+                break;
+            }
+            case "required": {
+                detailList = detailRepository.findByRequired(pageable, true);
+                break;
+            }
+            case "optional": {
+                detailList = detailRepository.findByRequired(pageable, false);
+                break;
+            }
+            case "find": {
+                detailList.add(detail);
+                break;
+            }
+        }
+        return detailList;
     }
 }

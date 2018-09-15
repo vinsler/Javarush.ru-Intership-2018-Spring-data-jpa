@@ -10,17 +10,15 @@ import parts.services.DetailService;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequestMapping("/")
+@Controller
+public class DetailController {
 
-@RequestMapping ("/")
-@Controller // создали контроллер деталей
-
-public class ControllerDetail {
-
-    @Autowired // автозагрузили класс сервиса деталей
+    @Autowired
     private DetailService serviceClassDetail;
 
-    @GetMapping("/") // начальная страница при загрузке
-    public String index(){
+    @GetMapping("/")
+    public String index() {
         return "index";
     }
 
@@ -29,31 +27,28 @@ public class ControllerDetail {
         List<Detail> detailList = serviceClassDetail.findAll(page);
         Integer size = serviceClassDetail.findAllSize();
         Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-
-        model = serviceClassDetail.prewReturn(model, detailList, page, size, "view", new Detail(), detailCountMin, new Detail());
-
+        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+                "view", new Detail(), detailCountMin, new Detail());
         return "view";
     }
 
-    @GetMapping ("/required")
-    public String findByRequired(Model model, @RequestParam Integer page){
+    @GetMapping("/required")
+    public String findByRequired(Model model, @RequestParam Integer page) {
         List<Detail> detailList = serviceClassDetail.findByRequired(page);
         Integer size = serviceClassDetail.findByRequiredSize();
         Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-
-        //model = serviceClassDetail.prewReturn(model, detailList, page, size, "required", new Detail(), detailCountMin);
-
+        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+                "required", new Detail(), detailCountMin, new Detail());
         return "view";
     }
 
-    @GetMapping ("/optional")
-    public String findByNotRequired(Model model, @RequestParam Integer page){
+    @GetMapping("/optional")
+    public String findByNotRequired(Model model, @RequestParam Integer page) {
         List<Detail> detailList = serviceClassDetail.findByOptional(page);
         Integer size = serviceClassDetail.findByOptionalSize();
         Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-
-        //model = serviceClassDetail.prewReturn(model, detailList, page, size, "optional", new Detail(), detailCountMin);
-
+        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+                "optional", new Detail(), detailCountMin, new Detail());
         return "view";
     }
 
@@ -64,12 +59,11 @@ public class ControllerDetail {
                          @PathVariable("dlist") int dlist,
                          @PathVariable("nameoflist") String nameoflist) {
         serviceClassDetail.delete(id);
-
         return serviceClassDetail.creatRedirectForEditDelete(dlist, nameoflist, page);
     }
 
     @GetMapping("/find")
-    public String findByName(Model model, @RequestParam String name){
+    public String findByName(Model model, @RequestParam String name) {
         List<Detail> detailList = new ArrayList<>();
         Detail detail = serviceClassDetail.findByName(name);
         if (detail.getName() == null) {
@@ -77,9 +71,8 @@ public class ControllerDetail {
         }
         detailList.add(detail);
         Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-
-        //model = serviceClassDetail.prewReturn(model, detailList, 0, 1, "find", new Detail(), detailCountMin);
-
+        model = serviceClassDetail.prewReturn(model, detailList, 0, 1,
+                "optional", new Detail(), detailCountMin, new Detail());
         return "view";
     }
 
@@ -90,7 +83,7 @@ public class ControllerDetail {
     }
 
     @PostMapping("/edit")
-    public String edit(@ModelAttribute("detailEdit") Detail detail){
+    public String edit(@ModelAttribute("detailEdit") Detail detail) {
         serviceClassDetail.update(detail);
         return "redirect:/view?page=0";
     }
@@ -101,25 +94,12 @@ public class ControllerDetail {
                        @RequestParam Integer page,
                        @RequestParam Integer size,
                        @RequestParam String nameoflist) {
-
         Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
         Detail detailEdit = serviceClassDetail.findByName(name);
         model.addAttribute("detailEdit", detailEdit);
-        List<Detail> detailList = null;
-        switch (nameoflist) {
-            case  "view": {
-                detailList = serviceClassDetail.findAll(page);
-                break;
-            }
-        }
-
-        model = serviceClassDetail.prewReturn(model, detailList, page, size, nameoflist, new Detail(), detailCountMin, detailEdit);
-
-        System.out.println(detailEdit.getName() + detailEdit.getId() + detailEdit.getCount());
-
-        return "view"; // "redirect:/[nameoflist]?=[page]"
-}
-
-
-
+        List<Detail> detailList = serviceClassDetail.detailListReturn(nameoflist, detailEdit, page);
+        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+                nameoflist, new Detail(), detailCountMin, detailEdit);
+        return "view";
+    }
 }
