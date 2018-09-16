@@ -1,0 +1,23 @@
+language: java
+jdk: oraclejdk8
+
+services:
+- mysql
+before_script:
+- mysql -u root -e "DROP DATABASE IF EXISTS test;"
+- mysql -u root -e "CREATE DATABASE test DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+- mysql -u root -e "USE test;"
+- mysql -u root -e "CREATE USER 'test'@'localhost' IDENTIFIED BY 'root';"
+- mysql -u root -e "GRANT ALL ON test.* TO 'test'@'localhost';"
+- cd src && cd main && cd resources && cd sql
+- mysql -u root test< database.sql
+- cd ../../../../
+script:
+- mvn clean package
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+
+recipients:
+- vinsler@yandex.ru
+on_success: always
+on_failure: always
