@@ -144,7 +144,7 @@
 <c:if test="${detailEdit.id == null}">
     <h3 class="tab"> Add new detail </h3>
 
-    <form:form modelAttribute="ctrlDetail" method="post" action="/add" class="tab">
+    <form:form modelAttribute="detailAddModel" method="post" action="/add" class="tab">
         <table>
             <tbody>
             <tr>
@@ -170,7 +170,7 @@
 
 <c:if test="${detailEdit.id != null}">
     <h3 class="tab"> Detail edit </h3>
-    <form:form modelAttribute="detailEdit" action="/edit" method="put" class="tab">
+    <form:form modelAttribute="detailEditModel" action="/edit" method="put" class="tab">
         <form:input type="hidden" path="id" value="${detailEdit.id}"/>
         <table>
             <tbody>
