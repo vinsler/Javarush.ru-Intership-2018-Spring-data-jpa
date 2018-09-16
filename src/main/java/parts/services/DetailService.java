@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import parts.dao.DetailRepository;
 import parts.entities.Detail;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +63,15 @@ public class DetailService {
         return detail;
     }
 
-    public void insert(Detail detail) {
+    public Integer insert(Detail detail) {
+        if (detail.getName() == null || detail.getName().equals("") || detail.getCount() <= 0) {
+            return 0;
+        }
+        if (detailRepository.findByName(detail.getName()) != null) {
+            return 0;
+        }
         detailRepository.saveAndFlush(detail);
+        return detailRepository.findAll().size() / 10;
     }
 
     public void update(Detail detail) {
@@ -133,6 +141,7 @@ public class DetailService {
                 break;
             }
             case "find": {
+                detailList = new ArrayList<>();
                 detailList.add(detail);
                 break;
             }

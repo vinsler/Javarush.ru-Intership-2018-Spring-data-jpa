@@ -15,7 +15,7 @@ import java.util.List;
 public class DetailController {
 
     @Autowired
-    private DetailService serviceClassDetail;
+    private DetailService detailService;
 
     @GetMapping("/")
     public String index() {
@@ -24,30 +24,30 @@ public class DetailController {
 
     @GetMapping("/view")
     public String findAll(Model model, @RequestParam Integer page) {
-        List<Detail> detailList = serviceClassDetail.findAll(page);
-        Integer size = serviceClassDetail.findAllSize();
-        Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+        List<Detail> detailList = detailService.findAll(page);
+        Integer size = detailService.findAllSize();
+        Integer detailCountMin = detailService.findDetailMinimum().getCount();
+        model = detailService.prewReturn(model, detailList, page, size,
                 "view", new Detail(), detailCountMin, new Detail());
         return "view";
     }
 
     @GetMapping("/required")
     public String findByRequired(Model model, @RequestParam Integer page) {
-        List<Detail> detailList = serviceClassDetail.findByRequired(page);
-        Integer size = serviceClassDetail.findByRequiredSize();
-        Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+        List<Detail> detailList = detailService.findByRequired(page);
+        Integer size = detailService.findByRequiredSize();
+        Integer detailCountMin = detailService.findDetailMinimum().getCount();
+        model = detailService.prewReturn(model, detailList, page, size,
                 "required", new Detail(), detailCountMin, new Detail());
         return "view";
     }
 
     @GetMapping("/optional")
     public String findByNotRequired(Model model, @RequestParam Integer page) {
-        List<Detail> detailList = serviceClassDetail.findByOptional(page);
-        Integer size = serviceClassDetail.findByOptionalSize();
-        Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+        List<Detail> detailList = detailService.findByOptional(page);
+        Integer size = detailService.findByOptionalSize();
+        Integer detailCountMin = detailService.findDetailMinimum().getCount();
+        model = detailService.prewReturn(model, detailList, page, size,
                 "optional", new Detail(), detailCountMin, new Detail());
         return "view";
     }
@@ -58,33 +58,35 @@ public class DetailController {
                          @PathVariable("page") int page,
                          @PathVariable("dlist") int dlist,
                          @PathVariable("nameoflist") String nameoflist) {
-        serviceClassDetail.delete(id);
-        return serviceClassDetail.creatRedirectForEditDelete(dlist, nameoflist, page);
+        detailService.delete(id);
+        return detailService.creatRedirectForEditDelete(dlist, nameoflist, page);
     }
 
     @GetMapping("/find")
     public String findByName(Model model, @RequestParam String name) {
         List<Detail> detailList = new ArrayList<>();
-        Detail detail = serviceClassDetail.findByName(name);
+        Detail detail = detailService.findByName(name);
         if (detail.getName() == null) {
             return "redirect:/view?page=0";
         }
         detailList.add(detail);
-        Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-        model = serviceClassDetail.prewReturn(model, detailList, 0, 1,
-                "optional", new Detail(), detailCountMin, new Detail());
+        Integer detailCountMin = detailService.findDetailMinimum().getCount();
+        model = detailService.prewReturn(model, detailList, 0, 1,
+                "find", new Detail(), detailCountMin, new Detail());
         return "view";
     }
 
     @PostMapping("/add")
     public String add(@ModelAttribute("ctrlDetail") Detail detail) {
-        serviceClassDetail.insert(detail);
-        return "redirect:/view?page=0";
+        Integer page = detailService.insert(detail);
+        return "redirect:/view?page=" + page;
     }
 
     @PostMapping("/edit")
     public String edit(@ModelAttribute("detailEdit") Detail detail) {
-        serviceClassDetail.update(detail);
+
+
+        detailService.update(detail);
         return "redirect:/view?page=0";
     }
 
@@ -94,11 +96,11 @@ public class DetailController {
                        @RequestParam Integer page,
                        @RequestParam Integer size,
                        @RequestParam String nameoflist) {
-        Integer detailCountMin = serviceClassDetail.findDetailMinimum().getCount();
-        Detail detailEdit = serviceClassDetail.findByName(name);
+        Integer detailCountMin = detailService.findDetailMinimum().getCount();
+        Detail detailEdit = detailService.findByName(name);
         model.addAttribute("detailEdit", detailEdit);
-        List<Detail> detailList = serviceClassDetail.detailListReturn(nameoflist, detailEdit, page);
-        model = serviceClassDetail.prewReturn(model, detailList, page, size,
+        List<Detail> detailList = detailService.detailListReturn(nameoflist, detailEdit, page);
+        model = detailService.prewReturn(model, detailList, page, size,
                 nameoflist, new Detail(), detailCountMin, detailEdit);
         return "view";
     }

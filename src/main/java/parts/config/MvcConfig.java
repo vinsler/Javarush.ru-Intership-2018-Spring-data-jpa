@@ -20,6 +20,7 @@ public class MvcConfig implements WebMvcConfigurer {
         resolver.setPrefix("WEB-INF/view/");
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);
+        //resolver.setContentType("text/html;charset=UTF-8");
         return resolver;
     }
 
