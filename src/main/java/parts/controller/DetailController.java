@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import parts.entities.Detail;
+import parts.services.DetailEditModel;
 import parts.services.DetailService;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class DetailController {
         Integer size = detailService.findAllSize();
         Integer detailCountMin = detailService.findDetailMinimum().getCount();
         model = detailService.prewReturn(model, detailList, page, size,
-                "view", new Detail(), detailCountMin, new Detail());
+                "view", new DetailEditModel(), detailCountMin, new DetailEditModel());
         return "view";
     }
 
@@ -38,7 +39,7 @@ public class DetailController {
         Integer size = detailService.findByRequiredSize();
         Integer detailCountMin = detailService.findDetailMinimum().getCount();
         model = detailService.prewReturn(model, detailList, page, size,
-                "required", new Detail(), detailCountMin, new Detail());
+                "required", new DetailEditModel(), detailCountMin, new DetailEditModel());
         return "view";
     }
 
@@ -48,7 +49,7 @@ public class DetailController {
         Integer size = detailService.findByOptionalSize();
         Integer detailCountMin = detailService.findDetailMinimum().getCount();
         model = detailService.prewReturn(model, detailList, page, size,
-                "optional", new Detail(), detailCountMin, new Detail());
+                "optional", new DetailEditModel(), detailCountMin, new DetailEditModel());
         return "view";
     }
 
@@ -72,21 +73,21 @@ public class DetailController {
         detailList.add(detail);
         Integer detailCountMin = detailService.findDetailMinimum().getCount();
         model = detailService.prewReturn(model, detailList, 0, 1,
-                "find", new Detail(), detailCountMin, new Detail());
+                "find", new DetailEditModel(), detailCountMin, new DetailEditModel());
         return "view";
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("ctrlDetail") Detail detail) {
-        Integer page = detailService.insert(detail);
+    public String add(@ModelAttribute("detailAddModel") DetailEditModel detailEditModel) {
+        Integer page = detailService.insert(detailEditModel);
         return "redirect:/view?page=" + page;
     }
 
     @PostMapping("/edit")
-    public String edit(@ModelAttribute("detailEdit") Detail detail) {
+    public String edit(@ModelAttribute("detailEditModel") DetailEditModel detailEditModel) {
 
 
-        detailService.update(detail);
+        detailService.update(detailEditModel);
         return "redirect:/view?page=0";
     }
 
@@ -97,11 +98,14 @@ public class DetailController {
                        @RequestParam Integer size,
                        @RequestParam String nameoflist) {
         Integer detailCountMin = detailService.findDetailMinimum().getCount();
-        Detail detailEdit = detailService.findByName(name);
-        model.addAttribute("detailEdit", detailEdit);
-        List<Detail> detailList = detailService.detailListReturn(nameoflist, detailEdit, page);
+        DetailEditModel detailEditModel = detailService.findByNameForDetailEdit(name);
+
+        model.addAttribute("detailEdit", detailEditModel);
+        List<Detail> detailList = detailService.detailListReturn(nameoflist, detailEditModel, page);
+
         model = detailService.prewReturn(model, detailList, page, size,
-                nameoflist, new Detail(), detailCountMin, detailEdit);
+                nameoflist, new DetailEditModel(), detailCountMin, detailEditModel);
+
         return "view";
     }
 }

@@ -63,18 +63,53 @@ public class DetailService {
         return detail;
     }
 
-    public Integer insert(Detail detail) {
-        if (detail.getName() == null || detail.getName().equals("") || detail.getCount() <= 0) {
+    public DetailEditModel findByNameForDetailEdit(String name) {
+        Detail detail = detailRepository.findByName(name);
+        if (detail == null) {
+            return new DetailEditModel();
+        }
+        DetailEditModel detailEditModel = new DetailEditModel();
+        detailEditModel.setId(detail.getId());
+        detailEditModel.setName(detail.getName());
+        detailEditModel.setRequired(detail.isRequired());
+        detailEditModel.setCount(String.valueOf(detail.getCount()));
+        return detailEditModel;
+    }
+
+
+    public Integer insert(DetailEditModel detailEditModel) {
+        if (detailEditModel.getName() == null || detailEditModel.getName().equals("")) {
             return 0;
         }
-        if (detailRepository.findByName(detail.getName()) != null) {
+        if (detailRepository.findByName(detailEditModel.getName()) != null) {
+            return 0;
+        }
+        Detail detail = new Detail();
+        detail.setId(detailEditModel.getId());
+        detail.setName(detailEditModel.getName());
+        detail.setRequired(detailEditModel.isRequired());
+        try {
+            detail.setCount(Integer.parseInt(detailEditModel.getCount().trim()));
+            if (detail.getCount() <= 0) {
+                return 0;
+            }
+        } catch (Exception e) {
             return 0;
         }
         detailRepository.saveAndFlush(detail);
         return detailRepository.findAll().size() / 10;
     }
 
-    public void update(Detail detail) {
+    public void update(DetailEditModel detailEditModel) {
+        Detail detail = new Detail();
+        detail.setId(detailEditModel.getId());
+        detail.setName(detailEditModel.getName());
+        detail.setRequired(detailEditModel.isRequired());
+        try {
+            detail.setCount(Integer.parseInt(detailEditModel.getCount()));
+        } catch (Exception e) {
+            return;
+        }
         Optional<Detail> detailOptional = detailRepository.findById(detail.getId());
         Detail detailGet = detailOptional.orElseThrow(() -> new RuntimeException("detail not find."));
         detailGet.setName(detail.getName());
@@ -84,14 +119,14 @@ public class DetailService {
     }
 
     public Model prewReturn(Model model, List<Detail> detailList, Integer page, Integer size,
-                            String viewer, Detail detail, Integer detailCountMin, Detail detailEdit) {
+                            String viewer, DetailEditModel detailAddModel, Integer detailCountMin, DetailEditModel detailEditModel) {
         model.addAttribute(detailList);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("nameoflist", viewer);
-        model.addAttribute("ctrlDetail", detail);
+        model.addAttribute("detailAddModel", detailAddModel);
         model.addAttribute("minCount", detailCountMin);
-        model.addAttribute("detailEdit", detailEdit);
+        model.addAttribute("detailEditModel", detailEditModel);
         return model;
     }
 
@@ -123,7 +158,7 @@ public class DetailService {
         return sb.toString();
     }
 
-    public List<Detail> detailListReturn(String nameoflist, Detail detail, Integer page) {
+    public List<Detail> detailListReturn(String nameoflist, DetailEditModel detailEditModel, Integer page) {
         List<Detail> detailList = null;
         Pageable pageable = PageRequest.of(page, 10);
 
@@ -142,7 +177,7 @@ public class DetailService {
             }
             case "find": {
                 detailList = new ArrayList<>();
-                detailList.add(detail);
+                detailList.add(detailRepository.findByName(detailEditModel.getName()));
                 break;
             }
         }
